@@ -52,7 +52,7 @@ export class MapHelperComponent implements OnInit {
     if (typeof google === 'object' && typeof google.maps === 'object') {
         resolve();
     } else {
-        const mapKey = 'AIzaSyBffHC_gr01KYBQ7GA5HEtAyk0sf2kzJ9I'; // SHOULD CHANGE
+        const mapKey = 'XXXX'; // SHOULD CHANGE
         const s = document.createElement('script');
         s.setAttribute('id', 'googleMap');
         s.type = 'text/javascript';
