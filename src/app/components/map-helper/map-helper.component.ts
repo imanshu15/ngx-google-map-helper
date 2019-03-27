@@ -1,11 +1,12 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Input } from '@angular/core';
 import { Shape } from 'src/app/models/shape.model';
 import { Cricle } from 'src/app/models/circle.model';
 import { OverLay } from 'src/app/models/overlay.model';
 import { Polygon } from 'src/app/models/polygon.model';
 import { Rectangle } from 'src/app/models/rectangle.model';
 import { LatLang } from 'src/app/models/latlang.model';
-
+import { OverLayOption } from 'src/app/models/overlay-option.model';
+import defaultValues from 'src/app/models/default-values';
 declare const google: any;
 
 @Component({
@@ -15,14 +16,27 @@ declare const google: any;
 })
 export class MapHelperComponent implements OnInit {
 
+  // Inputs
+  @Input() showControl = true;
+  @Input() position = defaultValues.handlerPositions[0]; // TOP_CENTER, BOTTOM_LEFT
+  @Input() showModes = defaultValues.drawingModes; // 'marker', 'circle', 'polygon', 'polyline', 'rectangle'
+  @Input() locationAccess = false;
+  @Input() commonOption: OverLayOption = defaultValues.defaultOverlayValues;
+  @Input() circleOption: OverLayOption = defaultValues.defaultOverlayValues;
+  @Input() polygonOption: OverLayOption = defaultValues.defaultOverlayValues;
+  @Input() polylineOption: OverLayOption = defaultValues.defaultOverlayValues;
+  @Input() rectangleOption: OverLayOption = defaultValues.defaultOverlayValues;
+
   lat: any = -34.397;
   lng: any = 150.644;
   zoom = 10;
   isWorldView = false;
-  map: any;
+
   allOverlays: any = [];
   selectedShape: any;
   drawingManager: any;
+
+  private map: any;
 
   constructor(private elementRef: ElementRef) { }
 
@@ -30,6 +44,7 @@ export class MapHelperComponent implements OnInit {
     Promise.all([
       this.lazyLoadMap()
     ]).then(value => this.initMap());
+    console.log(this.locationAccess);
   }
 
   lazyLoadMap() {
@@ -69,6 +84,7 @@ export class MapHelperComponent implements OnInit {
   }
 
   private setUpWorldView() {
+
     const allowedBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(85, -180),	// top left corner of map
       new google.maps.LatLng(-85, 180)	// bottom right corner
@@ -85,7 +101,7 @@ export class MapHelperComponent implements OnInit {
   }
 
   private setUpMap(isWorldView: boolean) {
-    console.log('MAP', this.lng, this.lat);
+
     this.map = new google.maps.Map(document.getElementById('map'), {
       center: {
         lat: this.lat,
@@ -394,17 +410,14 @@ export class MapHelperComponent implements OnInit {
     // google.maps.event.addListener(this.map, 'click', function(event) {
     //     this.placeMarker(event.latLng);
     //  }.bind(this));
-
+    console.log(this.showModes);
     this.drawingManager = new google.maps.drawing.DrawingManager({
       drawingMode: google.maps.drawing.OverlayType.MARKER,
-      drawingControl: true,
+      drawingControl: this.showControl,
       drawingControlOptions: {
-        position: google.maps.ControlPosition.TOP_CENTER,
-        drawingModes: [
-          google.maps.drawing.OverlayType.CIRCLE,
-          google.maps.drawing.OverlayType.POLYGON,
-          google.maps.drawing.OverlayType.RECTANGLE
-        ]
+        // tslint:disable-next-line:no-string-literal
+        position: google.maps.ControlPosition[this.position],
+        drawingModes: this.showModes
       },
       circleOptions: {
         fillColor: '#005696',
@@ -722,5 +735,11 @@ export class MapHelperComponent implements OnInit {
         const jsonStrng = JSON.stringify(shapes);
         console.log('OUTPUT', jsonStrng);
       }
+  }
+
+  // Additional Methods
+
+  private getHandlerPosition(position: string): any {
+
   }
 }
