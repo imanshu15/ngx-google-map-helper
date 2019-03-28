@@ -7,6 +7,7 @@ import { Rectangle } from 'src/app/models/rectangle.model';
 import { LatLang } from 'src/app/models/latlang.model';
 import { OverLayOption } from 'src/app/models/overlay-option.model';
 import defaultValues from 'src/app/models/default-values';
+import { MarkerOption } from 'src/app/models/marker-option.model';
 declare const google: any;
 
 @Component({
@@ -17,15 +18,17 @@ declare const google: any;
 export class MapHelperComponent implements OnInit {
 
   // Inputs
+  @Input() placeMarkerOnClick = false;
   @Input() showControl = true;
   @Input() position = defaultValues.handlerPositions[0]; // TOP_CENTER, BOTTOM_LEFT
   @Input() showModes = defaultValues.drawingModes; // 'marker', 'circle', 'polygon', 'polyline', 'rectangle'
   @Input() locationAccess = false;
   @Input() commonOption: OverLayOption = defaultValues.defaultOverlayValues;
-  @Input() circleOption: OverLayOption = defaultValues.defaultOverlayValues;
-  @Input() polygonOption: OverLayOption = defaultValues.defaultOverlayValues;
-  @Input() polylineOption: OverLayOption = defaultValues.defaultOverlayValues;
-  @Input() rectangleOption: OverLayOption = defaultValues.defaultOverlayValues;
+  @Input() circleOption: OverLayOption;
+  @Input() polygonOption: OverLayOption;
+  @Input() polylineOption: OverLayOption;
+  @Input() rectangleOption: OverLayOption;
+  @Input() markerOption: MarkerOption = defaultValues.defaultMarkerValues;
 
   lat: any = -34.397;
   lng: any = 150.644;
@@ -44,7 +47,8 @@ export class MapHelperComponent implements OnInit {
     Promise.all([
       this.lazyLoadMap()
     ]).then(value => this.initMap());
-    console.log(this.locationAccess);
+
+    this.initOverlayOptions();
   }
 
   lazyLoadMap() {
@@ -52,7 +56,7 @@ export class MapHelperComponent implements OnInit {
     if (typeof google === 'object' && typeof google.maps === 'object') {
         resolve();
     } else {
-        const mapKey = 'XXXX'; // SHOULD CHANGE
+        const mapKey = 'AIzaSyBffHC_gr01KYBQ7GA5HEtAyk0sf2kzJ9I'; // SHOULD CHANGE
         const s = document.createElement('script');
         s.setAttribute('id', 'googleMap');
         s.type = 'text/javascript';
@@ -66,6 +70,20 @@ export class MapHelperComponent implements OnInit {
     return promise;
   }
 
+  initOverlayOptions() {
+    if (!this.circleOption) {
+      this.circleOption = this.commonOption;
+    }
+    if (!this.polygonOption) {
+      this.polygonOption = this.commonOption;
+    }
+    if (!this.polylineOption) {
+      this.polylineOption = this.commonOption;
+    }
+    if (!this.rectangleOption) {
+      this.rectangleOption = this.commonOption;
+    }
+  }
   initMap() {
     if (navigator) {
       navigator.geolocation.getCurrentPosition(pos => {
@@ -407,10 +425,13 @@ export class MapHelperComponent implements OnInit {
     if (isWorldView) {
       this.setUpWorldView();
     }
-    // google.maps.event.addListener(this.map, 'click', function(event) {
-    //     this.placeMarker(event.latLng);
-    //  }.bind(this));
-    console.log(this.showModes);
+
+    if (this.placeMarkerOnClick) { //  this will place a marker on every click on the map
+      google.maps.event.addListener(this.map, 'click', function(event) {
+          this.placeMarker(event.latLng);
+      }.bind(this));
+    }
+
     this.drawingManager = new google.maps.drawing.DrawingManager({
       drawingMode: google.maps.drawing.OverlayType.MARKER,
       drawingControl: this.showControl,
@@ -419,68 +440,65 @@ export class MapHelperComponent implements OnInit {
         position: google.maps.ControlPosition[this.position],
         drawingModes: this.showModes
       },
+      markerOptions: {
+        icon: this.markerOption.icon,
+        title: this.markerOption.title,
+        animation: google.maps.Animation[this.markerOption.animation],
+        draggable: this.markerOption.draggable
+      },
       circleOptions: {
-        fillColor: '#005696',
-        fillOpacity: 0.2,
-        strokeColor: '#005696',
-        strokeWeight: 3,
-        clickable: false,
-        editable: true,
-        zIndex: 1
+        fillColor: this.circleOption.fillColor,
+        fillOpacity: this.circleOption.fillOpacity,
+        strokeColor: this.circleOption.strokeColor,
+        strokeWeight: this.circleOption.strokeWeight,
+        clickable: this.circleOption.clickable,
+        editable: this.circleOption.editable,
+        draggable: this.circleOption.draggable,
+        zIndex: this.circleOption.zIndex
       },
       polygonOptions: {
-        clickable: true,
-        draggable: true,
-        editable: true,
-        strokeColor: '#005696',
-        fillColor: '#005696',
-        fillOpacity: 0.2,
-
+        fillColor: this.polygonOption.fillColor,
+        fillOpacity: this.polygonOption.fillOpacity,
+        strokeColor: this.polygonOption.strokeColor,
+        strokeWeight: this.polygonOption.strokeWeight,
+        clickable: this.polygonOption.clickable,
+        editable: this.polygonOption.editable,
+        draggable: this.polygonOption.draggable,
+        zIndex: this.polygonOption.zIndex
       },
       rectangleOptions: {
-        clickable: true,
-        draggable: true,
-        editable: true,
-        strokeColor: '#005696',
-        fillColor: '#005696',
-        fillOpacity: 0.2,
+        fillColor: this.rectangleOption.fillColor,
+        fillOpacity: this.rectangleOption.fillOpacity,
+        strokeColor: this.rectangleOption.strokeColor,
+        strokeWeight: this.rectangleOption.strokeWeight,
+        clickable: this.rectangleOption.clickable,
+        editable: this.rectangleOption.editable,
+        draggable: this.rectangleOption.draggable,
+        zIndex: this.rectangleOption.zIndex
+      },
+      polylineOptions: {
+        fillColor: this.polylineOption.fillColor,
+        fillOpacity: this.polylineOption.fillOpacity,
+        strokeColor: this.polylineOption.strokeColor,
+        strokeWeight: this.polylineOption.strokeWeight,
+        clickable: this.polylineOption.clickable,
+        editable: this.polylineOption.editable,
+        draggable: this.polylineOption.draggable,
+        zIndex: this.polylineOption.zIndex
       }
     });
 
     this.drawingManager.setMap(this.map);
 
-    // tslint:disable-next-line:only-arrow-functions
-    const getPolygonCoords = function(newShape) {
-      console.log('We are one');
-      const len = newShape.getPath().getLength();
-      for (let i = 0; i < len; i++) {
-        console.log(newShape.getPath().getAt(i).toUrlValue(6));
-      }
-    };
-
-    // tslint:disable-next-line:only-arrow-functions
-    google.maps.event.addListener(this.drawingManager, 'polygoncomplete', function(event) {
-      console.log('POLYGON', event);
-      event.getPath().getLength();
-      // tslint:disable-next-line:only-arrow-functions
-      google.maps.event.addListener(event.getPath(), 'insert_at', function() {
-        const len = event.getPath().getLength();
-        for (let i = 0; i < len; i++) {
-          console.log(event.getPath().getAt(i).toUrlValue(5));
-        }
-      });
-      // tslint:disable-next-line:only-arrow-functions
-      google.maps.event.addListener(event.getPath(), 'set_at', function() {
-        const len = event.getPath().getLength();
-        for (let i = 0; i < len; i++) {
-          console.log(event.getPath().getAt(i).toUrlValue(5));
-        }
-      });
-    });
-
     google.maps.event.addListener(this.drawingManager, 'overlaycomplete', function(event) {
       this.addOverlay(event);
     }.bind(this));
+
+    const customControlDiv = document.createElement('div');
+    this.CenterControl(customControlDiv, this.map);
+
+    this.map.controls[google.maps.ControlPosition[this.position]].push(customControlDiv);
+
   }
 
   private addOverlay(event: any) {
@@ -492,9 +510,10 @@ export class MapHelperComponent implements OnInit {
       this.drawingManager.setDrawingMode(null);
       const newShape = event.overlay;
       newShape.type = event.type;
+
       google.maps.event.addListener(newShape, 'click', function() {
         this.setSelection(newShape);
-      });
+      }.bind(this));
 
       this.setSelection(newShape);
     }
@@ -515,19 +534,20 @@ export class MapHelperComponent implements OnInit {
     controlUI.style.borderRadius = '3px';
     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
     controlUI.style.cursor = 'pointer';
-    controlUI.style.marginBottom = '22px';
+    controlUI.style.marginTop = '5px';
+    controlUI.style.width = '32px';
     controlUI.style.textAlign = 'center';
-    controlUI.title = 'Select to delete the shape';
+    controlUI.title = 'Undo the last Action';
     controlDiv.appendChild(controlUI);
 
     const controlText = document.createElement('div');
     controlText.style.color = 'rgb(25,25,25)';
     controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText.style.fontSize = '16px';
-    controlText.style.lineHeight = '38px';
-    controlText.style.paddingLeft = '5px';
-    controlText.style.paddingRight = '5px';
-    controlText.innerHTML = 'Delete Selected Area';
+    controlText.style.fontSize = '12px';
+    controlText.style.lineHeight = '20px';
+    controlText.style.paddingLeft = '3px';
+    controlText.style.paddingRight = '3px';
+    controlText.innerHTML = 'Undo';
     controlUI.appendChild(controlText);
 
     // ----------------------------------
@@ -538,19 +558,21 @@ export class MapHelperComponent implements OnInit {
     controlUI2.style.borderRadius = '3px';
     controlUI2.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
     controlUI2.style.cursor = 'pointer';
-    controlUI2.style.marginBottom = '10px';
+    controlUI2.style.marginTop = '-24px';
     controlUI2.style.textAlign = 'center';
+    controlUI2.style.marginLeft = '40px';
+    controlUI2.style.width = '32px';
     controlUI2.title = 'Select to save the shape';
     controlDiv.appendChild(controlUI2);
 
     const controlText2 = document.createElement('div');
     controlText2.style.color = 'rgb(25,25,25)';
     controlText2.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText2.style.fontSize = '16px';
-    controlText2.style.lineHeight = '38px';
+    controlText2.style.fontSize = '12px';
+    controlText2.style.lineHeight = '20px';
     controlText2.style.paddingLeft = '5px';
     controlText2.style.paddingRight = '5px';
-    controlText2.innerHTML = 'Save Selected Area';
+    controlText2.innerHTML = 'Save';
     controlUI2.appendChild(controlText2);
 
     controlUI.addEventListener('click', function() {
@@ -560,8 +582,6 @@ export class MapHelperComponent implements OnInit {
     controlUI2.addEventListener('click', function() {
       this.saveSelectedShape();
     }.bind(this));
-
-    return controlUI;
   }
 
   public setSelection(shape) {

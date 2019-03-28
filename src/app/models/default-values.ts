@@ -10,10 +10,16 @@ const defaultValues: DefaultValuesModel = {
         fillOpacity: 0.2,
         strokeColor: '#005696',
         strokeWeight: 3,
-        clickable: false,
+        clickable: true,
         editable: true,
         draggable: true,
         zIndex: 1
+    },
+    defaultMarkerValues: {
+        animation: 'DROP',
+        draggable: true,
+        title: '',
+        icon: null
     }
 };
 
