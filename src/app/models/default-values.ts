@@ -21,6 +21,8 @@ const defaultValues: DefaultValuesModel = {
         title: '',
         icon: null
     }
+    , customButtons: [{key: 'undo', label: 'Undo'}, {key: 'clear', label: 'Clear All'}, {key: 'delete', label: 'Delete Selected'}
+     , {key: 'save', label: 'Save Selected'}, {key: 'saveAll', label: 'Save All'}]
 };
 
 export default defaultValues;

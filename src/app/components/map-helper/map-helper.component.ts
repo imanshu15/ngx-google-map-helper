@@ -8,6 +8,7 @@ import { LatLang } from 'src/app/models/latlang.model';
 import { OverLayOption } from 'src/app/models/overlay-option.model';
 import defaultValues from 'src/app/models/default-values';
 import { MarkerOption } from 'src/app/models/marker-option.model';
+import { CustomButton } from 'src/app/models/custom-button.model';
 declare const google: any;
 
 @Component({
@@ -29,6 +30,8 @@ export class MapHelperComponent implements OnInit {
   @Input() polylineOption: OverLayOption;
   @Input() rectangleOption: OverLayOption;
   @Input() markerOption: MarkerOption = defaultValues.defaultMarkerValues;
+  @Input() customButtons = true;
+  @Input() onlyCustomButtons = [];
 
   lat: any = -34.397;
   lng: any = 150.644;
@@ -40,6 +43,7 @@ export class MapHelperComponent implements OnInit {
   drawingManager: any;
 
   private map: any;
+  private customButtonsList: CustomButton[] = defaultValues.customButtons;
 
   constructor(private elementRef: ElementRef) { }
 
@@ -56,7 +60,7 @@ export class MapHelperComponent implements OnInit {
     if (typeof google === 'object' && typeof google.maps === 'object') {
         resolve();
     } else {
-        const mapKey = 'AIzaSyBffHC_gr01KYBQ7GA5HEtAyk0sf2kzJ9I'; // SHOULD CHANGE
+        const mapKey = 'XXXX'; // SHOULD CHANGE
         const s = document.createElement('script');
         s.setAttribute('id', 'googleMap');
         s.type = 'text/javascript';
@@ -494,11 +498,9 @@ export class MapHelperComponent implements OnInit {
       this.addOverlay(event);
     }.bind(this));
 
-    const customControlDiv = document.createElement('div');
-    this.CenterControl(customControlDiv, this.map);
-
-    this.map.controls[google.maps.ControlPosition[this.position]].push(customControlDiv);
-
+    if (this.customButtons) {
+      this.CustomButtons(this.map);
+    }
   }
 
   private addOverlay(event: any) {
@@ -526,62 +528,78 @@ export class MapHelperComponent implements OnInit {
     });
   }
 
-  public CenterControl(controlDiv, map): any {
+  public CustomButtons( map): any {
 
-    const controlUI = document.createElement('div');
-    controlUI.style.backgroundColor = '#fff';
-    controlUI.style.border = '2px solid #fff';
-    controlUI.style.borderRadius = '3px';
-    controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-    controlUI.style.cursor = 'pointer';
-    controlUI.style.marginTop = '5px';
-    controlUI.style.width = '32px';
-    controlUI.style.textAlign = 'center';
-    controlUI.title = 'Undo the last Action';
-    controlDiv.appendChild(controlUI);
+    let showButtons = this.customButtonsList;
+    if (this.onlyCustomButtons && this.onlyCustomButtons.length > 0 ) {
+      showButtons = this.customButtonsList.filter(a => this.onlyCustomButtons.includes(a.key));
+    }
+    if (showButtons && showButtons.length > 0) {
+      for (const button of showButtons) {
 
-    const controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
-    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText.style.fontSize = '12px';
-    controlText.style.lineHeight = '20px';
-    controlText.style.paddingLeft = '3px';
-    controlText.style.paddingRight = '3px';
-    controlText.innerHTML = 'Undo';
-    controlUI.appendChild(controlText);
+        const controlDiv = document.createElement('div');
+        controlDiv.style.marginRight = '2px';
 
-    // ----------------------------------
+        const controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginTop = '5px';
+        controlUI.style.marginBottom = '5px';
+        controlUI.style.width = '23px';
+        controlUI.style.height = '20px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = button.label;
+        controlDiv.appendChild(controlUI);
 
-    const controlUI2 = document.createElement('div');
-    controlUI2.style.backgroundColor = '#fff';
-    controlUI2.style.border = '2px solid #fff';
-    controlUI2.style.borderRadius = '3px';
-    controlUI2.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-    controlUI2.style.cursor = 'pointer';
-    controlUI2.style.marginTop = '-24px';
-    controlUI2.style.textAlign = 'center';
-    controlUI2.style.marginLeft = '40px';
-    controlUI2.style.width = '32px';
-    controlUI2.title = 'Select to save the shape';
-    controlDiv.appendChild(controlUI2);
+        const controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '12px';
+        controlText.style.lineHeight = '20px';
+        controlText.style.paddingLeft = '3px';
+        controlText.style.paddingRight = '3px';
+        controlText.innerHTML = `<img src="../assets/icons/${button.key}.svg" style="width: 18px;"/>`;
+        controlUI.appendChild(controlText);
 
-    const controlText2 = document.createElement('div');
-    controlText2.style.color = 'rgb(25,25,25)';
-    controlText2.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText2.style.fontSize = '12px';
-    controlText2.style.lineHeight = '20px';
-    controlText2.style.paddingLeft = '5px';
-    controlText2.style.paddingRight = '5px';
-    controlText2.innerHTML = 'Save';
-    controlUI2.appendChild(controlText2);
+        controlUI.addEventListener('click', function() {
+          this.handleCustomButtonEvent(button.key);
+        }.bind(this));
 
-    controlUI.addEventListener('click', function() {
-      this.deleteSelectedShape();
-    }.bind(this));
+        map.controls[google.maps.ControlPosition[this.position]].push(controlDiv);
 
-    controlUI2.addEventListener('click', function() {
-      this.saveSelectedShape();
-    }.bind(this));
+      }
+    } else {
+      console.error('ngx-google-map-helper: please check onlyCustomButtons property', this.onlyCustomButtons);
+    }
+  }
+
+  public handleCustomButtonEvent(button: string) {
+
+    switch (button) {
+      case 'undo': {
+         this.undoShape();
+         break;
+      }
+      case 'clear': {
+        this.deleteAllShape();
+        break;
+      }
+      case 'delete': {
+        this.deleteSelectedShape();
+        break;
+     }
+      case 'save': {
+         // statements;
+         break;
+      }
+      case 'saveAll': {
+        // statements;
+        break;
+     }
+   }
   }
 
   public setSelection(shape) {
