@@ -134,6 +134,41 @@
           }
         }
       }
+    },
+    "NgxGoogleMapHelper": {
+      "root": "projects/ngx-google-map-helper",
+      "sourceRoot": "projects/ngx-google-map-helper/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-google-map-helper/tsconfig.lib.json",
+            "project": "projects/ngx-google-map-helper/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-google-map-helper/src/test.ts",
+            "tsConfig": "projects/ngx-google-map-helper/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-google-map-helper/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-google-map-helper/tsconfig.lib.json",
+              "projects/ngx-google-map-helper/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-google-map-helper"

@@ -1,5 +1,5 @@
-import { OverLayOption } from './overlay-option.model';
-import { MarkerOption } from './marker-option.model';
+import { OverLayOption } from './overlay.model';
+import { MarkerOption } from './overlay.model';
 import { CustomButton } from './custom-button.model';
 
 export  interface DefaultValuesModel {

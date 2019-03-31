@@ -2,15 +2,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { MapHelperComponent } from './components/map-helper/map-helper.component';
+import { NgxGoogleMapHelperModule } from 'projects/ngx-google-map-helper/src/public-api';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MapHelperComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    NgxGoogleMapHelperModule
   ],
   providers: [],
   bootstrap: [AppComponent]

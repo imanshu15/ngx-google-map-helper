@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-google-map-helper": [
+        "dist/ngx-google-map-helper"
+      ],
+      "ngx-google-map-helper/*": [
+        "dist/ngx-google-map-helper/*"
+      ]
+    }
   }
 }

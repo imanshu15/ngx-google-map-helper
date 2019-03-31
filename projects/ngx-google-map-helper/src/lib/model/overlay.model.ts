@@ -1,3 +1,8 @@
+export interface OverLay {
+    type: string;
+    overlay: any;
+}
+
 export interface OverLayOption {
     fillColor: string;
     fillOpacity: any;
@@ -7,4 +12,11 @@ export interface OverLayOption {
     editable: boolean;
     draggable: boolean;
     zIndex: number;
+}
+
+export interface MarkerOption {
+    title: string;
+    icon: string;
+    draggable: boolean;
+    animation: string;
 }

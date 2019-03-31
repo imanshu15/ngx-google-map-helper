@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapHelperComponent } from './map-helper.component';
+import { NgxGoogleMapHelperComponent } from './ngx-google-map-helper.component';
 
-describe('MapHelperComponent', () => {
-  let component: MapHelperComponent;
-  let fixture: ComponentFixture<MapHelperComponent>;
+describe('NgxGoogleMapHelperComponent', () => {
+  let component: NgxGoogleMapHelperComponent;
+  let fixture: ComponentFixture<NgxGoogleMapHelperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapHelperComponent ]
+      declarations: [ NgxGoogleMapHelperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapHelperComponent);
+    fixture = TestBed.createComponent(NgxGoogleMapHelperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
