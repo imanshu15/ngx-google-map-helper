@@ -25,6 +25,8 @@ const defaultValues: DefaultValuesModel = {
      {key: 'save', label: 'Save Selected'}, {key: 'saveAll', label: 'Save All'}]
     , height: '500px'
     , width: '100%'
+    , zoom: 10
+    , center: {lat: -34.397, lng: 150.644}
 };
 
 export default defaultValues;

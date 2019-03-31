@@ -11,7 +11,9 @@ export class NgxGoogleMapHelperService {
   private apiKey = '';
 
   constructor(@Optional() config: MapConfig) {
-    if (config) { this.apiKey = config.key; }
+    if (config) {
+      this.apiKey = config.apiKey;
+    }
   }
 
   public getApiKey(): string {

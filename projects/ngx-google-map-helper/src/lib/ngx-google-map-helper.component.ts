@@ -16,9 +16,11 @@ declare const google: any;
 })
 export class NgxGoogleMapHelperComponent implements OnInit {
 
- // Inputs
+ // map style inputs
  @Input() mapHeight = defaultValues.height;
  @Input() mapWidth = defaultValues.width;
+
+ // drawing control inputs
  @Input() placeMarkerOnClick = false;
  @Input() showControl = true;
  @Input() position = defaultValues.handlerPositions[0]; // TOP_CENTER, BOTTOM_LEFT
@@ -35,15 +37,17 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  @Input() googleMapObjects = false;
  @Input() showErrors = true;
  @Input() shapes: Shape[] = [];
+
+ // map init inputs
+ @Input() zoom = defaultValues.zoom;
+ @Input() center = defaultValues.center;
+ @Input() mapType = 'ROADMAP'; // ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN']
  // outputs
  @Output() overlayCompleted = new EventEmitter();
  @Output() overlaySelected = new EventEmitter();
  @Output() saveSeleted = new EventEmitter();
  @Output() saveAll = new EventEmitter();
 
- lat: any = -34.397;
- lng: any = 150.644;
- zoom = 10;
  isWorldView = false;
 
  allOverlays: any = [];
@@ -108,8 +112,8 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  initMap() {
    if (this.locationAccess && navigator) {
      navigator.geolocation.getCurrentPosition(pos => {
-       this.lng = +pos.coords.longitude;
-       this.lat = +pos.coords.latitude;
+       this.center.lng = +pos.coords.longitude;
+       this.center.lat = +pos.coords.latitude;
        this.zoom = 10;
        this.setUpMap(false);
      }, error => {
@@ -148,11 +152,13 @@ export class NgxGoogleMapHelperComponent implements OnInit {
 
    this.map = new google.maps.Map(document.getElementById('map'), {
      center: {
-       lat: this.lat,
-       lng: this.lng
+       lat: this.center.lat,
+       lng: this.center.lng
      },
      zoom: this.zoom,
      minZoom: 2,
+     mapTypeId: google.maps.MapTypeId[this.mapType]
+     ,
      styles: [
        {
          featureType: 'administrative.province',
