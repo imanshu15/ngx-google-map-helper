@@ -1,12 +1,6 @@
-.google-map-wrap {
-    height: calc(100vh - 280px);
-    width: 100%;
 
-    .map-wrapper {
-        position: absolute;
-        width: 100%;
-        height: calc(100vh - 320px);
-        left: 0;
-        bottom: 0;
-    }
+.map-wrapper {
+    position: relative;
+    left: 0;
+    bottom: 0;
 }

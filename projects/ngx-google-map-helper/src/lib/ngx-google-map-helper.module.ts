@@ -1,18 +1,24 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { NgxGoogleMapHelperComponent } from './ngx-google-map-helper.component';
 import { NgxGoogleMapHelperService } from './ngx-google-map-helper.service';
+import { MapConfig } from './model/map-config.model';
 
 @NgModule({
+  imports:      [ CommonModule ],
   declarations: [NgxGoogleMapHelperComponent],
-  imports: [
-  ],
-  exports: [NgxGoogleMapHelperComponent]
+  exports: [NgxGoogleMapHelperComponent],
+  providers:    [ NgxGoogleMapHelperService ]
 })
 export class NgxGoogleMapHelperModule {
-    static forRoot(key: string): ModuleWithProviders {
+
+    static forRoot(config: MapConfig): ModuleWithProviders {
       return {
         ngModule: NgxGoogleMapHelperModule,
-        providers: [NgxGoogleMapHelperService]
+        providers: [
+          {provide: MapConfig, useValue: config }
+        ]
       };
     }
 }

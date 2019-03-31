@@ -5,6 +5,7 @@ import { LatLang } from './model/latlang.model';
 import { CustomButton } from './model/custom-button.model';
 
 import defaultValues from './model/default-values';
+import { NgxGoogleMapHelperService } from './ngx-google-map-helper.service';
 declare const google: any;
 
 @Component({
@@ -16,6 +17,8 @@ declare const google: any;
 export class NgxGoogleMapHelperComponent implements OnInit {
 
  // Inputs
+ @Input() mapHeight = defaultValues.height;
+ @Input() mapWidth = defaultValues.width;
  @Input() placeMarkerOnClick = false;
  @Input() showControl = true;
  @Input() position = defaultValues.handlerPositions[0]; // TOP_CENTER, BOTTOM_LEFT
@@ -48,16 +51,23 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  drawingManager: any;
 
  private map: any;
+ private apiKey: string;
  private customButtonsList: CustomButton[] = defaultValues.customButtons;
 
- constructor(private elementRef: ElementRef) { }
+ constructor(private elementRef: ElementRef, mapService: NgxGoogleMapHelperService) {
+  this.apiKey = mapService.getApiKey();
+ }
 
  ngOnInit() {
-   Promise.all([
-     this.lazyLoadMap()
-   ]).then(value => this.initMap());
+   if (this.apiKey && this.apiKey !== '') {
+    Promise.all([
+      this.lazyLoadMap()
+    ]).then(value => this.initMap());
 
-   this.initOverlayOptions();
+    this.initOverlayOptions();
+  } else {
+    this.showError('google map key required, include in forroot()', null);
+  }
  }
 
  lazyLoadMap() {
@@ -65,11 +75,10 @@ export class NgxGoogleMapHelperComponent implements OnInit {
    if (typeof google === 'object' && typeof google.maps === 'object') {
        resolve();
    } else {
-       const mapKey = 'XXXX'; // SHOULD CHANGE
        const s = document.createElement('script');
        s.setAttribute('id', 'googleMap');
        s.type = 'text/javascript';
-       s.src = `https://maps.googleapis.com/maps/api/js?key=${mapKey}&libraries=drawing`;
+       s.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&libraries=drawing`;
        this.elementRef.nativeElement.appendChild(s);
      }
    setTimeout(() => {

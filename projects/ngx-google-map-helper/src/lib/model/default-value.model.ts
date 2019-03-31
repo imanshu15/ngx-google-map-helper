@@ -8,4 +8,6 @@ export  interface DefaultValuesModel {
     defaultOverlayValues: OverLayOption;
     defaultMarkerValues: MarkerOption;
     customButtons: CustomButton[];
+    height: string;
+    width: string;
 }
