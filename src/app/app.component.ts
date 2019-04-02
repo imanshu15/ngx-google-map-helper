@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
    height = '500px';
    zoom = 7;
    center: LatLang = {lat: 7.8731, lng: 80.7718};
-   controlPosition = 'BOTTOM_LEFT';
+   controlPosition = 'TOP_CENTER';
    common: OverLayOption = {
     fillColor: '#3DFCE8',
     fillOpacity: 0.2,

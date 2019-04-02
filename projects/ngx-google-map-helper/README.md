@@ -8,6 +8,9 @@ An angular package for using drawing control options of Google Map API. It provi
   - Custom Buttons (Save, Undo, Delete...)
   - Output Events (OverlayCompleted, MapClicked..)
 
+You can check it online through here [NGXGoogleMapHelper Demo](https://imanshu15.github.io/ngx-google-map-helper/)
+![](assets/map-helper.png)
+
 ### Installation
 
 NgxGoogleMapHelper requires [Angular](https://angular.io/) v7+ to run.
@@ -77,6 +80,7 @@ You can go through Google Map API here. [Google Map Javscript API](https://devel
 ### Events
 
 Please note that this events return shape objects only when ```googleMapObjects = true``` (by default true), if its false it will return google map event.
+
 | Event | Description | Output |
 |------------------|-----------------------------------------------------|------------------------|
 | mapClicked | Event fires when user click on the map. | LatLng Object |
