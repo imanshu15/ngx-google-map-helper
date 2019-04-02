@@ -4,6 +4,7 @@ import { OverLay, OverLayOption, MarkerOption} from './model/overlay.model';
 import { LatLang } from './model/latlang.model';
 import { CustomButton } from './model/custom-button.model';
 
+import iconValues from './assets/icons';
 import defaultValues from './model/default-values';
 import { NgxGoogleMapHelperService } from './ngx-google-map-helper.service';
 declare const google: any;
@@ -595,7 +596,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
        controlText.style.lineHeight = '20px';
        controlText.style.paddingLeft = '3px';
        controlText.style.paddingRight = '3px';
-       controlText.innerHTML = `<img src="../assets/icons/${button.key}.svg" style="width: 18px;"/>`;
+       controlText.innerHTML = `<span> ${ iconValues[button.key] } </span>`;
        controlUI.appendChild(controlText);
 
        controlUI.addEventListener('click', function() {

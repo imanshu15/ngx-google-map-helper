@@ -1,5 +1,5 @@
 {
-  "name": "ngx-google-map-helper",
+  "name": "ngx-google-map-helper-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "package": "ng build NgxGoogleMapHelper"
   },
   "private": true,
   "dependencies": {

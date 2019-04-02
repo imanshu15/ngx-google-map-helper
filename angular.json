@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-google-map-helper": {
+    "ngx-google-map-helper-app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-google-map-helper",
+            "outputPath": "dist/ngx-google-map-helper-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-google-map-helper:build"
+            "browserTarget": "ngx-google-map-helper-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-google-map-helper:build:production"
+              "browserTarget": "ngx-google-map-helper-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-google-map-helper:build"
+            "browserTarget": "ngx-google-map-helper-app:build"
           }
         },
         "test": {
@@ -107,7 +107,7 @@
         }
       }
     },
-    "ngx-google-map-helper-e2e": {
+    "ngx-google-map-helper-app-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -116,11 +116,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ngx-google-map-helper:serve"
+            "devServerTarget": "ngx-google-map-helper-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ngx-google-map-helper:serve:production"
+              "devServerTarget": "ngx-google-map-helper-app:serve:production"
             }
           }
         },
@@ -171,5 +171,5 @@
       }
     }
   },
-  "defaultProject": "ngx-google-map-helper"
+  "defaultProject": "ngx-google-map-helper-app"
 }

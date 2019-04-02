@@ -1,6 +1,35 @@
 {
   "name": "ngx-google-map-helper",
+  "description": "An angular package for using drawing control options of Google Map API",
   "version": "0.0.1",
+  "author": {
+    "name": "Imanshu Jayasinghe",
+    "email": "imanshu15@gmail.com",
+    "url": "https://github.com/imanshu15"
+  },
+  "contributors": [
+    {
+      "name": "Imanshu Jayasinghe",
+      "email": "imanshu15@gmail.com",
+      "url": "https://github.com/imanshu15"
+    }
+  ],
+  "keywords": [
+    "angular",
+    "typescript",
+    "ngx",
+    "google map",
+    "google map drawing",
+    "google map API",
+    "drawing controls"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imanshu15/ngx-google-map-helper.git"
+  },
+  "homepage": "https://github.com/imanshu15/ngx-google-map-helper",
+  "bugs": "https://github.com/imanshu15/ngx-google-map-helper/issues",
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0"
