@@ -10,4 +10,4 @@ before_script:
   - npm install -g @angular/cli
 script:
 - ng lint
-- ng build NgxGoogleMapHelper
+- ng build NgxGoogleMapHelper --base-href https://github.com/imanshu15/ngx-google-map-helper
