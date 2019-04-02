@@ -5,7 +5,7 @@ export interface Shape {
     shape: any;
 }
 
-export interface Cricle {
+export interface Circle {
     center: LatLang;
     radius: number;
 }

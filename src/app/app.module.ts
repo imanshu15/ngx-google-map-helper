@@ -11,7 +11,7 @@ import { NgxGoogleMapHelperModule } from 'projects/ngx-google-map-helper/src/pub
   imports: [
     BrowserModule,
     NgxGoogleMapHelperModule.forRoot({
-      apiKey: 'XXXXXXXXXXXXXXXXXXXXXX'
+      apiKey: 'XXXXXXXXXXXXXXXXXXXXX'
     })
   ],
   providers: [],

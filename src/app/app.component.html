@@ -1,4 +1,31 @@
-<h1> Ngx Google Map Helper Demo</h1>
+<h1> {{title}}</h1>
 
-<ngx-google-map-helper [locationAccess] = true [showControl] = true 
-[mapHeight] = "'1000px'" [mapWidth] = "'50%'"></ngx-google-map-helper>
+<!-- You can use the map without any parameters, it will use default values -->
+<!-- Customize map functionality -->
+<!-- Please read Readme file to know every available option-->
+<!-- You can directly bind the value or bind a model-->
+<ngx-google-map-helper 
+    [mapHeight] = "height" 
+    [mapWidth] = "width"
+    [zoom] = "zoom"
+    [center] = "center"
+    [mapType] = "'TERRAIN'"
+    [placeMarkerOnClick] = true
+    [showControl] = true
+    [position] = "controlPosition" 
+    [showModes] = "['marker', 'circle', 'polygon']"
+    [locationAccess] = true
+    [commonOption] = "common"
+    [circleOption] = "circle"
+    [markerOption] = "marker"
+    [customButtons] = true
+    [onlyCustomButtons] = "['undo','clear','saveAll']"
+    [googleMapObjects] = false
+    [showErrors] = true
+    [shapes] = "shapes"
+    
+    (mapClicked) = "onMapClicked($event)"
+    (overlayCompleted) = "onOverLayCompleted($event)"
+    (overlaySelected) = "onOverLaySelected($event)"
+    (saveSeleted) = "onSaveSelected($event)"
+    (saveAll) = "onSaveAll($event)"></ngx-google-map-helper>

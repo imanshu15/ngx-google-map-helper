@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-import { Shape, Cricle, Polygon, Rectangle, Marker } from './model/shapes.model';
+import { Shape, Circle, Polygon, Rectangle, Marker } from './model/shapes.model';
 import { OverLay, OverLayOption, MarkerOption} from './model/overlay.model';
 import { LatLang } from './model/latlang.model';
 import { CustomButton } from './model/custom-button.model';
@@ -20,7 +20,9 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  // map style inputs
  @Input() mapHeight = defaultValues.height;
  @Input() mapWidth = defaultValues.width;
-
+ @Input() zoom = defaultValues.zoom;
+ @Input() center: LatLang = null;
+ @Input() mapType = 'ROADMAP'; // ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN']
  // drawing control inputs
  @Input() placeMarkerOnClick = false;
  @Input() showControl = true;
@@ -39,11 +41,9 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  @Input() showErrors = true;
  @Input() shapes: Shape[] = [];
 
- // map init inputs
- @Input() zoom = defaultValues.zoom;
- @Input() center = defaultValues.center;
- @Input() mapType = 'ROADMAP'; // ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN']
+
  // outputs
+ @Output() mapClicked = new EventEmitter();
  @Output() overlayCompleted = new EventEmitter();
  @Output() overlaySelected = new EventEmitter();
  @Output() saveSeleted = new EventEmitter();
@@ -64,6 +64,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  }
 
  ngOnInit() {
+   console.log(this.shapes);
    if (this.apiKey && this.apiKey !== '') {
     Promise.all([
       this.lazyLoadMap()
@@ -73,6 +74,21 @@ export class NgxGoogleMapHelperComponent implements OnInit {
   } else {
     this.showError('google map key required, include in forroot()', null);
   }
+ }
+
+ checkValues() {
+    if (!this.mapWidth) {
+      this.mapWidth = defaultValues.width;
+    }
+    if (!this.mapHeight) {
+      this.mapHeight = defaultValues.height;
+    }
+    if (!this.zoom) {
+      this.zoom = defaultValues.zoom;
+    }
+    // if (!this.center) {
+    //   this.center = defaultValues.center;
+    // }
  }
 
  lazyLoadMap() {
@@ -115,7 +131,6 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      navigator.geolocation.getCurrentPosition(pos => {
        this.center.lng = +pos.coords.longitude;
        this.center.lat = +pos.coords.latitude;
-       this.zoom = 10;
        this.setUpMap(false);
      }, error => {
        this.setUpMap(true);
@@ -151,10 +166,19 @@ export class NgxGoogleMapHelperComponent implements OnInit {
 
  private setUpMap(isWorldView: boolean) {
 
-   this.map = new google.maps.Map(document.getElementById('map'), {
+    let tempCenter: LatLang;
+    if (this.center) {
+      tempCenter = this.center;
+      this.isWorldView = false;
+      isWorldView = false;
+    } else {
+      tempCenter = defaultValues.center;
+    }
+
+    this.map = new google.maps.Map(document.getElementById('map'), {
      center: {
-       lat: this.center.lat,
-       lng: this.center.lng
+       lat: tempCenter.lat,
+       lng: tempCenter.lng
      },
      zoom: this.zoom,
      minZoom: 2,
@@ -455,17 +479,21 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      ]
    });
 
-   if (isWorldView) {
+    if (isWorldView) {
      this.setUpWorldView();
    }
+    if (this.placeMarkerOnClick) {
+      google.maps.event.addListener(this.map, 'click', function(event) {
+          this.placeMarker(event.latLng);
+          this.mapClicked.emit(event);
+      }.bind(this));
+    } else {
+      google.maps.event.addListener(this.map, 'click', function(event) {
+        this.mapClicked.emit(event);
+      }.bind(this));
+    }
 
-   if (this.placeMarkerOnClick) { //  this will place a marker on every click on the map
-     google.maps.event.addListener(this.map, 'click', function(event) {
-         this.placeMarker(event.latLng);
-     }.bind(this));
-   }
-
-   this.drawingManager = new google.maps.drawing.DrawingManager({
+    this.drawingManager = new google.maps.drawing.DrawingManager({
      drawingMode: google.maps.drawing.OverlayType.MARKER,
      drawingControl: this.showControl,
      drawingControlOptions: {
@@ -521,18 +549,24 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      }
    });
 
-   this.drawingManager.setMap(this.map);
+    this.drawingManager.setMap(this.map);
 
-   google.maps.event.addListener(this.drawingManager, 'overlaycomplete', function(event) {
+    google.maps.event.addListener(this.drawingManager, 'overlaycomplete', function(event) {
      this.addOverlay(event);
-     this.overlayCompleted.emit(event); // output overlay complete
+     if (this.googleMapObjects) {
+      this.overlayCompleted.emit(event); // output overlay complete
+     } else {
+      const temp = this.getOverlayType(event);
+      this.overlayCompleted.emit(temp);
+     }
+
    }.bind(this));
 
-   if (this.customButtons) {
+    if (this.customButtons) {
      this.initCustomButtons(this.map);
    }
 
-   if (this.shapes && this.shapes.length > 0) {
+    if (this.shapes && this.shapes.length > 0) {
      this.loadShapeToMap(this.shapes);
    }
  }
@@ -558,7 +592,11 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  public placeMarker(location: any) {
    const marker = new google.maps.Marker({
      position: location,
-     map: this.map
+     map: this.map,
+     icon: this.markerOption.icon,
+     title: this.markerOption.title,
+     animation: google.maps.Animation[this.markerOption.animation],
+     draggable: this.markerOption.draggable
    });
  }
 
@@ -643,7 +681,12 @@ export class NgxGoogleMapHelperComponent implements OnInit {
    this.clearSelection();
    this.selectedShape = shape;
    shape.setEditable(true);
-   this.overlaySelected.emit(shape); // output overlay selected
+   if (this.googleMapObjects) {
+    this.overlaySelected.emit(shape); // output overlay selected
+   } else {
+    const temp = this.getOverlayType(shape);
+    this.overlaySelected.emit(temp);
+   }
  }
 
  // clears selected shape on map
@@ -727,7 +770,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
    }
    if (object.type === 'circle') {
      const center: LatLang = { lat: overlay.center.lat(), lng: overlay.center.lng() };
-     const circle: Cricle = { center, radius: overlay.radius };
+     const circle: Circle = { center, radius: overlay.radius };
      shape = {
        type: object.type,
        shape: circle
@@ -802,7 +845,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
            this.map.fitBounds(bounds);
          }
        } else if (shape.type === 'circle') {
-         const circleObj: Cricle = shape.shape;
+         const circleObj: Circle = shape.shape;
          const circle = new google.maps.Circle({
            fillColor: this.circleOption.fillColor,
            fillOpacity: this.circleOption.fillOpacity,
