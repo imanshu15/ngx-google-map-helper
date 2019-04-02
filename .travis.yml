@@ -10,4 +10,5 @@ before_script:
   - npm install -g @angular/cli
 script:
 - ng lint
-- npm run travis
+- ng build NgxGoogleMapHelper 
+- ng build 

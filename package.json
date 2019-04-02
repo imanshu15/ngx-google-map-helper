@@ -8,8 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "package": "ng build NgxGoogleMapHelper",
-    "travis": "ng build NgxGoogleMapHelper && ng build --prod --base-href https://imanshu15.github.io/ngx-google-map-helper/"
+    "package": "ng build NgxGoogleMapHelper"
   },
   "private": true,
   "dependencies": {
