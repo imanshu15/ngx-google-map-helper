@@ -135,14 +135,14 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      }, error => {
        this.setUpMap(true);
        this.isWorldView = true;
-       this.showError('error while reading location', this.onlyCustomButtons);
+       this.showError('error while reading location', null);
      });
    } else {
      this.setUpMap(true);
      this.isWorldView = true;
 
      if (this.locationAccess) {
-       this.showError('please allow location access on browser', this.onlyCustomButtons);
+       this.showError('please allow location access on browser', null);
      }
    }
  }
@@ -598,6 +598,12 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      animation: google.maps.Animation[this.markerOption.animation],
      draggable: this.markerOption.draggable
    });
+
+   const overlay: OverLay = {
+      type: 'marker',
+      overlay: marker
+    };
+   this.addOverlay(overlay);
  }
 
  // Initialize custom buttons

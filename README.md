@@ -1,6 +1,6 @@
 # Google Map Drawing Controls for Angular (NgxGoogleMapHelper)
 
-[![Build Status](https://travis-ci.org/imanshu15/ngx-google-map-helper.svg?branch=master)](https://travis-ci.org/imanshu15/ngx-google-map-helper) [![Fork](https://img.shields.io/github/forks/imanshu15/ngx-google-map-helper.svg?label=Forks&style=social)](https://github.com/imanshu15/ngx-google-map-helper)
+[![Build Status](https://travis-ci.org/imanshu15/ngx-google-map-helper.svg?branch=master)](https://travis-ci.org/imanshu15/ngx-google-map-helper) [![NpmVersion](https://img.shields.io/npm/v/ngx-google-map-helper.svg)](https://www.npmjs.com/package/ngx-google-map-helper) [![Downloads](https://img.shields.io/npm/dt/ngx-google-map-helper.svg)](https://www.npmjs.com/package/ngx-google-map-helper) [![Fork](https://img.shields.io/github/forks/imanshu15/ngx-google-map-helper.svg?label=Forks&style=social)](https://github.com/imanshu15/ngx-google-map-helper)
 
 An angular package for using drawing control options of Google Map API. It provides following features,
 
@@ -8,12 +8,11 @@ An angular package for using drawing control options of Google Map API. It provi
   - Custom Buttons (Save, Undo, Delete...)
   - Output Events (OverlayCompleted, MapClicked..)
 
-You can check it online through here [NGXGoogleMapHelper Demo](https://imanshu15.github.io/ngx-google-map-helper/)
+You can check it online through here [NGXGoogleMapHelperDemo](https://imanshu15.github.io/ngx-google-map-helper/)
+
 ![](assets/map-helper.png)
 
 ### Installation
-
-NgxGoogleMapHelper requires [Angular](https://angular.io/) v7+ to run.
 
 Install using npm,
 ```sh
@@ -37,6 +36,10 @@ imports: [
 
 ### Example
 
+Refer to main app in this repository for working example.
+Or this [Stackblitz Demo](https://stackblitz.com/edit/ngx-google-map-helper-demo) (Please change the API Key with your key in app.module ,
+If the map is not loaded please try - Open In New Window option.)
+
 After importing ```NgxGoogleMapHelperModule``` in your module file just use the ```ngx-google-map-helper``` component as below,
 ```html
 
@@ -45,7 +48,6 @@ After importing ```NgxGoogleMapHelperModule``` in your module file just use the 
     [showControl] = true 
     [mapHeight] = "'1000px'" 
     [mapWidth] = "'50%'"> </ngx-google-map-helper>
-</form>
 
 ```
 

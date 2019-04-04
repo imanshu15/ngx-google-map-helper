@@ -8,7 +8,7 @@ import { LatLang, OverLayOption, MarkerOption, Shape, Marker, Circle } from 'pro
 })
 
 export class AppComponent implements OnInit {
-  title = 'Ngx Google Map Helper Demo';
+   title = 'Ngx Google Map Helper Demo';
 
    width = '100%';
    height = '500px';
