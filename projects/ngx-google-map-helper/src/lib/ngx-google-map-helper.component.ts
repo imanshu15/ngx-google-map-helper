@@ -22,12 +22,12 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  @Input() mapWidth = defaultValues.width;
  @Input() zoom = defaultValues.zoom;
  @Input() center: LatLang = null;
- @Input() mapType = 'ROADMAP'; // ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN']
+ @Input() mapType = 'ROADMAP';
  // drawing control inputs
  @Input() placeMarkerOnClick = false;
  @Input() showControl = true;
- @Input() position = defaultValues.handlerPositions[0]; // TOP_CENTER, BOTTOM_LEFT
- @Input() showModes = defaultValues.drawingModes; // 'marker', 'circle', 'polygon', 'polyline', 'rectangle'
+ @Input() position = defaultValues.handlerPositions[0];
+ @Input() showModes = defaultValues.drawingModes;
  @Input() locationAccess = false;
  @Input() commonOption: OverLayOption = defaultValues.defaultOverlayValues;
  @Input() circleOption: OverLayOption;
@@ -49,11 +49,11 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  @Output() saveSeleted = new EventEmitter();
  @Output() saveAll = new EventEmitter();
 
- isWorldView = false;
+ private isWorldView = false;
 
- allOverlays: any = [];
- selectedShape: any;
- drawingManager: any;
+ private allOverlays: any = [];
+ private selectedShape: any;
+ private drawingManager: any;
 
  private map: any;
  private apiKey: string;
@@ -64,7 +64,6 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  }
 
  ngOnInit() {
-   console.log(this.shapes);
    if (this.apiKey && this.apiKey !== '') {
     Promise.all([
       this.lazyLoadMap()
@@ -86,9 +85,6 @@ export class NgxGoogleMapHelperComponent implements OnInit {
     if (!this.zoom) {
       this.zoom = defaultValues.zoom;
     }
-    // if (!this.center) {
-    //   this.center = defaultValues.center;
-    // }
  }
 
  lazyLoadMap() {
@@ -718,7 +714,6 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      if (this.selectedShape) {
        const shape = this.getOverlayType(this.selectedShape);
        this.saveSeleted.emit(shape);
-       console.log(shape);
      }
    }
  }

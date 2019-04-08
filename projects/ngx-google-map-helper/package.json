@@ -1,7 +1,7 @@
 {
   "name": "ngx-google-map-helper",
   "description": "An angular package for using drawing control options of Google Map API",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "author": {
     "name": "Imanshu Jayasinghe",
     "email": "imanshu15@gmail.com",
