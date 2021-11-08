@@ -2,11 +2,14 @@
 
 [![Build Status](https://travis-ci.org/imanshu15/ngx-google-map-helper.svg?branch=master)](https://travis-ci.org/imanshu15/ngx-google-map-helper) [![NpmVersion](https://img.shields.io/npm/v/ngx-google-map-helper.svg)](https://www.npmjs.com/package/ngx-google-map-helper) [![Downloads](https://img.shields.io/npm/dt/ngx-google-map-helper.svg)](https://www.npmjs.com/package/ngx-google-map-helper) [![Fork](https://img.shields.io/github/forks/imanshu15/ngx-google-map-helper.svg?label=Forks&style=social)](https://github.com/imanshu15/ngx-google-map-helper)
 
+##### Version 2 supports Angular 12
+
 An angular package for using drawing control options of Google Map API. It provides following features,
 
   - Google Map API Drawing Controls (Marker, Rectangle, Polyline, Polygon, Circle)
   - Custom Buttons (Save, Undo, Delete...)
   - Output Events (OverlayCompleted, MapClicked..)
+
 
 You can check it online through here [NGXGoogleMapHelperDemo](https://imanshu15.github.io/ngx-google-map-helper/)
 
@@ -91,6 +94,13 @@ Please note that this events return shape objects only when ```googleMapObjects 
 | saveSeleted | Event fires when save custom button is clicked. | Shape Object |
 | saveAll | Event fires when saveAll custom button is clicked. | Array of Shape Objects |
 
+### Versions
+| Version | Angular Version | 
+|------------------|-----------------------------------------------------|
+| V 1.* | Angular 7 |
+| V 2.* | Angular 12|
+
+
 ### Development
 
 Want to contribute?
@@ -118,6 +128,3 @@ License
 ----
 MIT
 **Free Software**
-
-
- 
