@@ -88,7 +88,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
  }
 
  lazyLoadMap() {
-   const promise = new Promise((resolve, reject) => {
+   const promise = new Promise<void>((resolve, reject) => {
    if (typeof google === 'object' && typeof google.maps === 'object') {
        resolve();
    } else {
@@ -479,14 +479,14 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      this.setUpWorldView();
    }
     if (this.placeMarkerOnClick) {
-      google.maps.event.addListener(this.map, 'click', function(event) {
+      google.maps.event.addListener(this.map, 'click', (event: any) => {
           this.placeMarker(event.latLng);
           this.mapClicked.emit(event);
-      }.bind(this));
+      });
     } else {
-      google.maps.event.addListener(this.map, 'click', function(event) {
+      google.maps.event.addListener(this.map, 'click', (event: any) =>  {
         this.mapClicked.emit(event);
-      }.bind(this));
+      });
     }
 
     this.drawingManager = new google.maps.drawing.DrawingManager({
@@ -547,7 +547,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
 
     this.drawingManager.setMap(this.map);
 
-    google.maps.event.addListener(this.drawingManager, 'overlaycomplete', function(event) {
+    google.maps.event.addListener(this.drawingManager, 'overlaycomplete', (event: any) => {
      this.addOverlay(event);
      if (this.googleMapObjects) {
       this.overlayCompleted.emit(event); // output overlay complete
@@ -556,7 +556,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
       this.overlayCompleted.emit(temp);
      }
 
-   }.bind(this));
+   });
 
     if (this.customButtons) {
      this.initCustomButtons(this.map);
@@ -576,9 +576,9 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      const newShape = event.overlay;
      newShape.type = event.type;
 
-     google.maps.event.addListener(newShape, 'click', function() {
+     google.maps.event.addListener(newShape, 'click', () => {
        this.setSelection(newShape);
-     }.bind(this));
+     });
 
      this.setSelection(newShape);
    }
@@ -639,9 +639,9 @@ export class NgxGoogleMapHelperComponent implements OnInit {
        controlText.innerHTML = `<span> ${ iconValues[button.key] } </span>`;
        controlUI.appendChild(controlText);
 
-       controlUI.addEventListener('click', function() {
+       controlUI.addEventListener('click', () => {
          this.handleCustomButtonEvent(button.key);
-       }.bind(this));
+       });
 
        map.controls[google.maps.ControlPosition[this.position]].push(controlDiv);
 
@@ -767,7 +767,7 @@ export class NgxGoogleMapHelperComponent implements OnInit {
      overlay = object.overlay;
    } else {
      this.showError('Error while reading overlay, try googleMapObjects = true', object);
-     return;
+     return null;
    }
    if (object.type === 'circle') {
      const center: LatLang = { lat: overlay.center.lat(), lng: overlay.center.lng() };

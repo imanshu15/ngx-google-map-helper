@@ -13,7 +13,7 @@ import { MapConfig } from './model/map-config.model';
 })
 export class NgxGoogleMapHelperModule {
 
-    static forRoot(config: MapConfig): ModuleWithProviders {
+    static forRoot(config: MapConfig): ModuleWithProviders<NgxGoogleMapHelperModule> {
       return {
         ngModule: NgxGoogleMapHelperModule,
         providers: [
