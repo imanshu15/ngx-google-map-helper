@@ -17,7 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     AppRoutingModule,
     NgxGoogleMapHelperModule.forRoot({
-      apiKey: 'AIzaSyAy_Nokkda9SNAYmW_DH4yMejDOLKNpF-U'
+      apiKey: 'XXXXXXXXXXXXXXXXXXXXXXXXXXX'
     })
   ],
   providers: [],
