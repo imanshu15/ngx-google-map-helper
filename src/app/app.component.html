@@ -1,10 +1,18 @@
 <h1> {{title}}</h1>
 
+<ngx-google-map-helper 
+    [mapHeight] = "height" 
+    [mapWidth] = "width"
+    [zoom] = "zoom"
+    [center] = "center"
+    [mapType] = "'TERRAIN'"
+    [locationAccess] = true></ngx-google-map-helper>
+
 <!-- You can use the map without any parameters, it will use default values -->
 <!-- Customize map functionality -->
 <!-- Please read Readme file to know every available option-->
 <!-- You can directly bind the value or bind a model-->
-<ngx-google-map-helper 
+<!-- <ngx-google-map-helper 
     [mapHeight] = "height" 
     [mapWidth] = "width"
     [zoom] = "zoom"
@@ -28,4 +36,4 @@
     (overlayCompleted) = "onOverLayCompleted($event)"
     (overlaySelected) = "onOverLaySelected($event)"
     (saveSeleted) = "onSaveSelected($event)"
-    (saveAll) = "onSaveAll($event)"></ngx-google-map-helper>
+    (saveAll) = "onSaveAll($event)"></ngx-google-map-helper> -->
